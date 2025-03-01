@@ -7,8 +7,8 @@ import queue
 import threading
 from open_ai_modules import ChromeExtensionAssistant
 
-app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+application = Flask(__name__)
+CORS(application)  # Enable CORS for all routes
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 # Create a global instance of the assistant
 assistant = ChromeExtensionAssistant()
 
-@app.route('/create_thread', methods=['POST'])
+@application.route('/create_thread', methods=['POST'])
 def create_thread():
     """Create or update a thread for a website"""
     try:
@@ -41,7 +41,7 @@ def create_thread():
         logging.error(f"Error in create_thread: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-@app.route('/chat', methods=['POST'])
+@application.route('/chat', methods=['POST'])
 def chat():
     """Send a message to the AI assistant (non-streaming)"""
     try:
@@ -63,7 +63,7 @@ def chat():
         logging.error(f"Error in chat: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-@app.route('/chat_stream', methods=['POST'])
+@application.route('/chat_stream', methods=['POST'])
 def chat_stream():
     """Stream responses from the AI assistant"""
     try:
@@ -113,4 +113,4 @@ def chat_stream():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    application.run(debug=True, port=5000)
